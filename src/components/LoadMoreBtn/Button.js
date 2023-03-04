@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import React from 'react';
 
 import { ButtonCss } from './Button.styled';
@@ -11,3 +13,7 @@ function Button({ onClick }) {
 }
 
 export default Button;
+
+Button.propTypes = {
+  onClick: PropTypes.func.isRequired,
+};

@@ -17,44 +17,45 @@ export class ImageGallery extends Component {
     modalItem: null,
   };
 
-  componentDidUpdate = (prevProps, prevState) => {
+  componentDidUpdate = async (prevProps, prevState) => {
     const { page } = this.state;
     const prevText = prevProps.searchText;
     const currentText = this.props.searchText;
-    // const currentPage = this.props.page;
-    if (prevText !== currentText) {
-      this.setState({ loader: true, page: 1 });
-      console.log('submit');
-      console.log(page);
 
-      getImages(currentText, page)
-        .then(resp => resp.json())
-        .then(images => {
-          this.setState({
-            images: [...images.hits],
-          });
-        })
-        .catch(err => console.log(err))
-        .finally(() => this.setState({ loader: false }));
+    if (prevText !== currentText) {
+      this.setState({ loader: true });
+
+      try {
+        const response = await getImages(currentText, 1);
+        const imagesData = await response.json();
+
+        this.setState({
+          images: [...imagesData.hits],
+        });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.setState({ loader: false });
+      }
     }
 
     if (prevText === currentText && prevState.page !== page) {
       this.setState({ loader: true });
-      console.log('load more');
-      console.log(page);
 
-      getImages(currentText, page)
-        .then(resp => resp.json())
-        .then(images => {
-          this.setState(prevState => ({
-            images: [...prevState.images, ...images.hits],
-          }));
-        })
-        .catch(err => console.log(err))
-        .finally(() => this.setState({ loader: false }));
+      try {
+        const response = await getImages(currentText, page);
+        const imagesData = await response.json();
+
+        this.setState(prevState => ({
+          images: [...prevState.images, ...imagesData.hits],
+        }));
+      } catch (err) {
+        console.log(err);
+      } finally {
+        this.setState({ loader: false });
+      }
     }
   };
-
   handleButtonClick = () => {
     this.setState(prevState => ({ page: prevState.page + 1 }));
   };
@@ -73,7 +74,6 @@ export class ImageGallery extends Component {
   render() {
     const { handleButtonClick, toggleModal } = this;
     const { images, loader, modalItem } = this.state;
-    // console.log(this.state.images);
 
     return (
       <>

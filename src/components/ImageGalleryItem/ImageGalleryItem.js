@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import { ImageGalleryItemCss, ImageGallery } from './ImageGalleryItem.styled';
 
 export const ImageGalleryItem = ({ id, webformatURL, togle }) => {
@@ -13,3 +15,9 @@ export const ImageGalleryItem = ({ id, webformatURL, togle }) => {
 };
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.propTypes = {
+  id: PropTypes.number.isRequired,
+  webformatURL: PropTypes.string.isRequired,
+  togle: PropTypes.func.isRequired,
+};
