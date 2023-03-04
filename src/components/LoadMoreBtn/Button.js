@@ -1,10 +1,12 @@
 import React from 'react';
 
+import { ButtonCss } from './Button.styled';
+
 function Button({ onClick }) {
   return (
-    <button type="button" onClick={onClick}>
+    <ButtonCss type="button" onClick={onClick}>
       Loadmore
-    </button>
+    </ButtonCss>
   );
 }
 
